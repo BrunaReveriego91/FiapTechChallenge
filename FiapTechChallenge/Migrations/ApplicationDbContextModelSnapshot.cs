@@ -74,6 +74,47 @@ namespace FiapTechChallenge.API.Migrations
                             Descricao = "Câmbio"
                         });
                 });
+
+            modelBuilder.Entity("FiapTechChallenge.API.Entity.Investimento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INT");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClasseInvestimentoId")
+                        .HasColumnType("INT");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.Property<int>("IdClasseInvestimento")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClasseInvestimentoId");
+
+                    b.ToTable("Investimento", (string)null);
+                });
+
+            modelBuilder.Entity("FiapTechChallenge.API.Entity.Investimento", b =>
+                {
+                    b.HasOne("FiapTechChallenge.API.Entity.ClasseInvestimento", "ClasseInvestimento")
+                        .WithMany("Investimentos")
+                        .HasForeignKey("ClasseInvestimentoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ClasseInvestimento");
+                });
+
+            modelBuilder.Entity("FiapTechChallenge.API.Entity.ClasseInvestimento", b =>
+                {
+                    b.Navigation("Investimentos");
+                });
 #pragma warning restore 612, 618
         }
     }

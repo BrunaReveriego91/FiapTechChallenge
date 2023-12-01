@@ -12,7 +12,9 @@ namespace FiapTechChallenge.API.Repository
             _configuration = configuration;
         }
 
-        public DbSet<ClasseInvestimento> ClasseInvesmento { get; set; }
+        public DbSet<ClasseInvestimento> ClasseInvestimento { get; set; }
+        public DbSet<Investimento> Investimento { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
