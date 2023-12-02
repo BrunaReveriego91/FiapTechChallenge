@@ -1,4 +1,7 @@
+using FiapTechChallenge.API.Interfaces.Repository;
+using FiapTechChallenge.API.Interfaces.Services;
 using FiapTechChallenge.API.Repository;
+using FiapTechChallenge.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
@@ -42,6 +45,9 @@ builder.Services.AddSwaggerGen(c =>
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(ServiceLifetime.Scoped);
+builder.Services.AddScoped<IInvestimentoRepository, InvestimentoRepository>();
+builder.Services.AddScoped<IInvestimentosService, InvestimentoService>();
+
 
 builder.Logging.ClearProviders();
 //builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration()

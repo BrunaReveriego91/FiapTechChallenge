@@ -1,4 +1,6 @@
-﻿namespace FiapTechChallenge.API.Entity
+﻿using System.Text.Json.Serialization;
+
+namespace FiapTechChallenge.API.Entity
 {
     public class ClasseInvestimento : Entidade
     {
@@ -8,6 +10,8 @@
         }
 
         public string Descricao { get; set; }
+
+        [JsonIgnore]
         public ICollection<Investimento> Investimentos { get; set; }
     }
 }
