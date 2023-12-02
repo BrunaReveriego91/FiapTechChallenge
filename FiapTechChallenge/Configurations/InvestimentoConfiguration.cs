@@ -14,7 +14,8 @@ namespace FiapTechChallenge.API.Configurations
             builder.Property(p => p.Descricao).HasColumnType("VARCHAR(100)");
             builder.HasOne(c => c.ClasseInvestimento)
                 .WithMany(inv => inv.Investimentos)
-                .HasPrincipalKey(u => u.Id);
+                .HasForeignKey(u => u.IdClasseInvestimento)
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

@@ -2,10 +2,9 @@
 {
     public class Investimento : Entidade
     {
-        public Investimento(string descricao, int idClasseInvestimento)
+        public Investimento()
         {
-            Descricao = descricao;
-            IdClasseInvestimento = idClasseInvestimento;
+
         }
 
         public string Descricao { get; set; }
