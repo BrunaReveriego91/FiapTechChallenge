@@ -1,13 +1,19 @@
+using FiapTechChallenge.API.Core;
+using FiapTechChallenge.API.Core.Entity;
+using FiapTechChallenge.API.Core.Interfaces;
 using FiapTechChallenge.API.Interfaces.Repository;
 using FiapTechChallenge.API.Interfaces.Services;
 using FiapTechChallenge.API.Repository;
 using FiapTechChallenge.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -52,7 +58,9 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<ApplicationDbContext>(ServiceLifetime.Scoped);
 builder.Services.AddScoped<IInvestimentoRepository, InvestimentoRepository>();
 builder.Services.AddScoped<IInvestimentosService, InvestimentoService>();
-
+builder.Services.AddScoped<IAutenticarRepository, AutenticarRepository>();
+builder.Services.AddScoped<IAutenticarService, AutenticarService>();
+builder.Services.AddScoped<IJwtToken, JwtToken>();
 
 builder.Logging.ClearProviders();
 //builder.Logging.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration()
@@ -71,19 +79,18 @@ builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetSection("AppSettings").GetValue<string>("Secret"))),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
 });
-//.AddJwtBearer(x =>
-//{
-//    x.RequireHttpsMetadata = false;
-//    x.SaveToken = true;
-//    x.TokenValidationParameters = new TokenValidationParameters()
-//    {
-//        ValidateIssuerSigningKey = true,
-//        IssuerSigningKey = new SymmetricSecurityKey(key),
-//        ValidateIssuer = false,
-//        ValidateAudience = false
-//    };
-//});
 
 var app = builder.Build();
 

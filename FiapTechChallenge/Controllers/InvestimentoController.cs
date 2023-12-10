@@ -1,5 +1,6 @@
 ﻿using FiapTechChallenge.API.Entity;
 using FiapTechChallenge.API.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FiapTechChallenge.API.Controllers
@@ -22,6 +23,7 @@ namespace FiapTechChallenge.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Investimento>))]
         [Produces("application/json")]
         [HttpGet("obter-todos-investimentos")]
+        [Authorize]
         public async Task<IActionResult> ObterListaInvestimentosDisponiveis()
         {
             return Ok(await _investimentosService.ObterListaInvestimentosDisponiveis());
