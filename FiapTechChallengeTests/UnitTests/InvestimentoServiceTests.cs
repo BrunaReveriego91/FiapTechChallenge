@@ -1,6 +1,7 @@
 ﻿using FiapTechChallenge.API.Entity;
 using FiapTechChallenge.API.Interfaces.Repository;
 using FiapTechChallenge.API.Services;
+using FiapTechChallenge.API.Tests.UnitTests.Fakes;
 using Moq;
 using Xunit;
 
@@ -21,19 +22,9 @@ namespace FiapTechChallenge.API.Tests.UnitTests
             //Arrange
             var servico = CriarServico();
 
-            var listaInvestimentosMoq = new List<Investimento>
-            {
-                new Investimento
-                {
-                    Id = 1,
-                    Descricao = "Tesouro Direto",
-                    IdClasseInvestimento = 1,
-                    ClasseInvestimento = new ClasseInvestimento{ Id = 1, Descricao = "Renda Fixa"}
-                }
-            };
+            var investimentosFaker = FakeInvestimento.GetList(1);
 
-
-            _investimentoRepository.Setup(x => x.ObterListaInvestimentosDisponiveis()).ReturnsAsync(listaInvestimentosMoq);
+            _investimentoRepository.Setup(x => x.ObterListaInvestimentosDisponiveis()).ReturnsAsync(investimentosFaker);
             //Act
             var response = await servico.ObterListaInvestimentosDisponiveis();
 
