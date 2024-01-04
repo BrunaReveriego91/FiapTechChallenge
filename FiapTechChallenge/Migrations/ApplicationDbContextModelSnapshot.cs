@@ -205,6 +205,39 @@ namespace FiapTechChallenge.API.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FiapTechChallenge.API.Entity.Ordem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INT");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TipoOrdem")
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ordem", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Quantidade = 99,
+                            TipoOrdem = "A Mercado"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Quantidade = 49,
+                            TipoOrdem = "StartStop"
+                        });
+                });
+
             modelBuilder.Entity("FiapTechChallenge.API.Entity.Usuario", b =>
                 {
                     b.Property<int>("Id")

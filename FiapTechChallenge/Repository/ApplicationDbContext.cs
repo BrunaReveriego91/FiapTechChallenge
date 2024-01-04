@@ -15,6 +15,7 @@ namespace FiapTechChallenge.API.Repository
         public DbSet<ClasseInvestimento> ClasseInvestimento { get; set; }
         public DbSet<Investimento> Investimento { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<Ordem> Ordem { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -87,6 +88,11 @@ namespace FiapTechChallenge.API.Repository
 
             modelBuilder.Entity<Usuario>().HasData(
                                new Usuario { Id = 1, Nome = "admin", Email = "admin@admin.com", Login = "admin", Senha = "admin@123" });
+
+            modelBuilder.Entity<Ordem>().HasData(
+                    new Ordem { Id = 1, Quantidade = 99, TipoOrdem = "A Mercado" },
+                    new Ordem { Id = 2, Quantidade = 49, TipoOrdem = "StartStop" }
+                );
         }
     }
 }
