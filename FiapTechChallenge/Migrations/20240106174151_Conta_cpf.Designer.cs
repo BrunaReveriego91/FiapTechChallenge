@@ -4,6 +4,7 @@ using FiapTechChallenge.API.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FiapTechChallenge.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240106174151_Conta_cpf")]
+    partial class Conta_cpf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,14 +104,11 @@ namespace FiapTechChallenge.API.Migrations
                     b.Property<string>("Complemento")
                         .HasColumnType("VARCHAR(100)");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("VARCHAR(250)");
-
                     b.Property<string>("Estado")
                         .HasColumnType("VARCHAR(2)");
 
                     b.Property<int>("IdUsuario")
-                        .HasColumnType("int");
+                        .HasColumnType("INT");
 
                     b.Property<string>("Logradouro")
                         .HasColumnType("VARCHAR(100)");
@@ -133,7 +133,12 @@ namespace FiapTechChallenge.API.Migrations
                     b.Property<decimal>("Renda")
                         .HasColumnType("NUMERIC(15,2)");
 
+                    b.Property<int?>("UsuarioId")
+                        .HasColumnType("INT");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Conta", (string)null);
                 });
@@ -147,10 +152,8 @@ namespace FiapTechChallenge.API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Agencia")
-                        .HasColumnType("VARCHAR(20)");
-
-                    b.Property<string>("CodigoBanco")
-                        .HasColumnType("VARCHAR(10)");
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(100)");
 
                     b.Property<int?>("ContaId")
                         .HasColumnType("INT");
@@ -159,7 +162,8 @@ namespace FiapTechChallenge.API.Migrations
                         .HasColumnType("INT");
 
                     b.Property<string>("NumeroConta")
-                        .HasColumnType("VARCHAR(20)");
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(100)");
 
                     b.HasKey("Id");
 
@@ -307,14 +311,8 @@ namespace FiapTechChallenge.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ContaId")
-                        .HasColumnType("INT");
-
                     b.Property<string>("Email")
                         .HasColumnType("VARCHAR(100)");
-
-                    b.Property<int>("IdConta")
-                        .HasColumnType("INT");
 
                     b.Property<string>("Login")
                         .HasColumnType("VARCHAR(100)");
@@ -327,8 +325,6 @@ namespace FiapTechChallenge.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContaId");
-
                     b.ToTable("Usuario", (string)null);
 
                     b.HasData(
@@ -336,11 +332,19 @@ namespace FiapTechChallenge.API.Migrations
                         {
                             Id = 1,
                             Email = "admin@admin.com",
-                            IdConta = 0,
                             Login = "admin",
                             Nome = "admin",
                             Senha = "admin@123"
                         });
+                });
+
+            modelBuilder.Entity("FiapTechChallenge.API.Entity.Conta", b =>
+                {
+                    b.HasOne("FiapTechChallenge.API.Entity.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("FiapTechChallenge.API.Entity.DadosBancario", b =>
@@ -363,15 +367,6 @@ namespace FiapTechChallenge.API.Migrations
                     b.Navigation("ClasseInvestimento");
                 });
 
-            modelBuilder.Entity("FiapTechChallenge.API.Entity.Usuario", b =>
-                {
-                    b.HasOne("FiapTechChallenge.API.Entity.Conta", "Conta")
-                        .WithMany("Usuario")
-                        .HasForeignKey("ContaId");
-
-                    b.Navigation("Conta");
-                });
-
             modelBuilder.Entity("FiapTechChallenge.API.Entity.ClasseInvestimento", b =>
                 {
                     b.Navigation("Investimentos");
@@ -380,8 +375,6 @@ namespace FiapTechChallenge.API.Migrations
             modelBuilder.Entity("FiapTechChallenge.API.Entity.Conta", b =>
                 {
                     b.Navigation("DadosBancarios");
-
-                    b.Navigation("Usuario");
                 });
 #pragma warning restore 612, 618
         }

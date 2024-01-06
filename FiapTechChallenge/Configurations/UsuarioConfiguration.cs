@@ -15,6 +15,7 @@ namespace FiapTechChallenge.API.Configurations
             builder.Property(p => p.Email).HasColumnType("VARCHAR(100)");
             builder.Property(p => p.Login).HasColumnType("VARCHAR(100)");
             builder.Property(p => p.Senha).HasColumnType("VARCHAR(100)");
+            builder.Property(p => p.IdConta).HasColumnType("INT");
         }
     }
 }

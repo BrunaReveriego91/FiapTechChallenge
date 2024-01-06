@@ -15,6 +15,8 @@ namespace FiapTechChallenge.API.Repository
         public DbSet<ClasseInvestimento> ClasseInvestimento { get; set; }
         public DbSet<Investimento> Investimento { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<DadosBancario> DadosBancario { get; set; }
+        public DbSet<Conta> Conta { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
