@@ -1,17 +1,22 @@
-﻿using FiapTechChallenge.API.DTO;
+﻿using FiapTechChallenge.API.Core.Helpers;
+using FiapTechChallenge.API.DTO;
 using FiapTechChallenge.API.Entity;
 using FiapTechChallenge.API.Interfaces.Repository;
 using FiapTechChallenge.API.Interfaces.Services;
+using FluentValidation;
 
 namespace FiapTechChallenge.API.Services
 {
     public class ContaService : IContaService
     {
         private readonly IContaRepository _repository;
+        private readonly IValidator<Conta> _validator;
 
-        public ContaService(IContaRepository repository)
+        public ContaService(IContaRepository repository,
+                           IValidator<Conta> validator)
         {
             _repository = repository;
+            _validator = validator;
         }
         public Conta AdicionarConta(ContaDTO contaDto)
         {
@@ -34,11 +39,8 @@ namespace FiapTechChallenge.API.Services
             conta.Complemento = contaDto.Complemento;
             conta.Bairro = contaDto.Bairro;
             conta.Cidade = contaDto.Cidade;
-            conta.Estado = contaDto.Estado;            
-            conta.Usuario = new List<Usuario>
-            {
-                usuario
-            };
+            conta.Estado = contaDto.Estado;
+            conta.Usuario = usuario;
             conta.DadosBancarios = new List<DadosBancario>();
             foreach (var item in contaDto.DadosBancarios)
             {
@@ -50,7 +52,16 @@ namespace FiapTechChallenge.API.Services
                 });
             };
 
-            return _repository.AdicionarConta(conta);
+            var validationResult = _validator.Validate(conta);
+
+            if (validationResult.IsValid)
+            {
+                return _repository.AdicionarConta(conta);
+            }
+            else
+            {
+                throw new ValidationException(validationResult.Errors.Concat(","));
+            }
         }
 
         public Conta AtualizarConta(ContaDTO contaDto)
@@ -79,14 +90,24 @@ namespace FiapTechChallenge.API.Services
                     Agencia = item.Agencia,
                     NumeroConta = item.NumeroConta,
                 });
-            };            
-            return _repository.AtualizarConta(conta);
+            };
+
+            var validationResult = _validator.Validate(conta);
+
+            if (validationResult.IsValid)
+            {
+                return _repository.AdicionarConta(conta);
+            }
+            else
+            {
+                throw new ValidationException(validationResult.Errors.Concat("," + Environment.NewLine));
+            }
         }
         public Task RemoverConta(int id)
         {
             var conta = _repository.ObterContaPorId(id).Result;
 
-            if (conta == null) { throw new Exception("Conta não encontrada"); }
+            if (conta == null) { throw new ValidationException("Conta não encontrada"); }
 
             conta.Ativo = false;
 

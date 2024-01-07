@@ -25,7 +25,7 @@ namespace FiapTechChallenge.API.Configurations
             builder.Property(p => p.Bairro).HasColumnType("VARCHAR(100)");
             builder.Property(p => p.Cidade).HasColumnType("VARCHAR(100)");
             builder.Property(p => p.Estado).HasColumnType("VARCHAR(2)");
-            builder.Property(p => p.Ativo).HasColumnType("BIT");
+            builder.Property(p => p.Ativo).HasColumnType("BIT");            
         }
     }
 }

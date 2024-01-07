@@ -1,6 +1,7 @@
 ﻿using FiapTechChallenge.API.DTO;
 using FiapTechChallenge.API.Entity;
 using FiapTechChallenge.API.Interfaces.Services;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -61,14 +62,25 @@ namespace FiapTechChallenge.API.Controllers
         /// Cadastrar Conta
         /// </summary>
         /// <returns>Conta</returns>
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Conta))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Conta))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Produces("application/json")]
         [HttpPost("adiciona-conta")]
         //[Authorize]
         public IActionResult Adicionar(ContaDTO conta)
         {
-            return  Ok(_contaService.AdicionarConta(conta));
+            try
+            {
+                return StatusCode(StatusCodes.Status201Created, _contaService.AdicionarConta(conta));
+            }
+            catch (ValidationException ex)
+            {
+                return StatusCode(400, new { error = ex.Message });
+            }
+            catch
+            {
+                return StatusCode(500, "Falha interna no servidor");
+            }
         }
         /// <summary>
         /// Atualizar Conta
@@ -81,7 +93,18 @@ namespace FiapTechChallenge.API.Controllers
         [Authorize]
         public IActionResult Atualiza(ContaDTO conta)
         {
-            return Ok(_contaService.AtualizarConta(conta));
+            try
+            {
+                return Ok(_contaService.AtualizarConta(conta));
+            }
+            catch (ValidationException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch
+            {
+                return StatusCode(500, "Falha interna no servidor");
+            }
         }
 
         /// <summary>
@@ -95,7 +118,19 @@ namespace FiapTechChallenge.API.Controllers
         //[Authorize]
         public IActionResult Remove(int id)
         {
-            return Ok(_contaService.RemoverConta(id));
+            try
+            {
+                return Ok(_contaService.RemoverConta(id));
+            }
+            catch (ValidationException ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+            catch
+            {
+                return StatusCode(500, "Falha interna no servidor");
+            }
+            
         }
     }
 

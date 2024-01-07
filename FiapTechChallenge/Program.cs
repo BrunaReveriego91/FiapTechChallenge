@@ -1,10 +1,13 @@
 using FiapTechChallenge.API.Core;
 using FiapTechChallenge.API.Core.Entity;
 using FiapTechChallenge.API.Core.Interfaces;
+using FiapTechChallenge.API.Entity;
+using FiapTechChallenge.API.Entity.Validators;
 using FiapTechChallenge.API.Interfaces.Repository;
 using FiapTechChallenge.API.Interfaces.Services;
 using FiapTechChallenge.API.Repository;
 using FiapTechChallenge.API.Services;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -64,6 +67,7 @@ builder.Services.AddScoped<IInvestimentosService, InvestimentoService>();
 
 builder.Services.AddScoped<IContaRepository, ContaRepository>();
 builder.Services.AddScoped<IContaService, ContaService>();
+builder.Services.AddScoped<IValidator<Conta>, ContaValidator>();
 
 builder.Services.AddScoped<IAutenticarRepository, AutenticarRepository>();
 builder.Services.AddScoped<IAutenticarService, AutenticarService>();

@@ -21,9 +21,7 @@
         public string Cidade { get; set; }
         public string Estado { get; set; }
         public bool Ativo { get; set; } = true;
-        public int IdUsuario { get; set; }
-        public List<Usuario> Usuario { get; set; }
+        public Usuario Usuario { get; set; }
         public List<DadosBancario> DadosBancarios { get; set; }
-
     }
 }
