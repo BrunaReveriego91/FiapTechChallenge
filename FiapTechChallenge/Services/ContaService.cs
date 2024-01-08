@@ -96,11 +96,11 @@ namespace FiapTechChallenge.API.Services
 
             if (validationResult.IsValid)
             {
-                return _repository.AdicionarConta(conta);
+                return _repository.AtualizarConta(conta);
             }
             else
             {
-                throw new ValidationException(validationResult.Errors.Concat("," + Environment.NewLine));
+                throw new ValidationException(validationResult.Errors.Concat(","));
             }
         }
         public Task RemoverConta(int id)
