@@ -75,6 +75,117 @@ namespace FiapTechChallenge.API.Migrations
                         });
                 });
 
+            modelBuilder.Entity("FiapTechChallenge.API.Entity.Conta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INT");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("BIT");
+
+                    b.Property<string>("Bairro")
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.Property<string>("CEP")
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.Property<string>("CPF")
+                        .HasColumnType("VARCHAR(11)");
+
+                    b.Property<string>("Cidade")
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.Property<string>("Complemento")
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("VARCHAR(250)");
+
+                    b.Property<string>("Estado")
+                        .HasColumnType("VARCHAR(2)");
+
+                    b.Property<string>("Logradouro")
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.Property<string>("NomeMae")
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.Property<string>("NomePai")
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.Property<string>("Numero")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.Property<string>("NumeroConta")
+                        .IsRequired()
+                        .HasColumnType("VARCHAR(100)");
+
+                    b.Property<decimal>("Renda")
+                        .HasColumnType("NUMERIC(15,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Conta", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Ativo = true,
+                            Bairro = "Centro",
+                            CEP = "1200000",
+                            CPF = "11111111111",
+                            Cidade = "São Paulo",
+                            Complemento = "Casa",
+                            Email = "admin@admin.com",
+                            Estado = "SP",
+                            Logradouro = "Rua Sem Nome",
+                            Nome = "Admin",
+                            NomeMae = "Maria",
+                            NomePai = "José",
+                            Numero = "1",
+                            NumeroConta = "1111",
+                            Renda = 0m
+                        });
+                });
+
+            modelBuilder.Entity("FiapTechChallenge.API.Entity.DadosBancario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INT");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Agencia")
+                        .HasColumnType("VARCHAR(20)");
+
+                    b.Property<string>("CodigoBanco")
+                        .HasColumnType("VARCHAR(10)");
+
+                    b.Property<int?>("ContaId")
+                        .HasColumnType("INT");
+
+                    b.Property<int>("IdConta")
+                        .HasColumnType("INT");
+
+                    b.Property<string>("NumeroConta")
+                        .HasColumnType("VARCHAR(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContaId");
+
+                    b.ToTable("DadosBancarios", (string)null);
+                });
+
             modelBuilder.Entity("FiapTechChallenge.API.Entity.Investimento", b =>
                 {
                     b.Property<int>("Id")
@@ -248,6 +359,9 @@ namespace FiapTechChallenge.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("ContaId")
+                        .HasColumnType("INT");
+
                     b.Property<string>("Email")
                         .HasColumnType("VARCHAR(100)");
 
@@ -262,17 +376,30 @@ namespace FiapTechChallenge.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ContaId")
+                        .IsUnique();
+
                     b.ToTable("Usuario", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            ContaId = 1,
                             Email = "admin@admin.com",
                             Login = "admin",
                             Nome = "admin",
                             Senha = "admin@123"
                         });
+                });
+
+            modelBuilder.Entity("FiapTechChallenge.API.Entity.DadosBancario", b =>
+                {
+                    b.HasOne("FiapTechChallenge.API.Entity.Conta", "Conta")
+                        .WithMany("DadosBancarios")
+                        .HasForeignKey("ContaId");
+
+                    b.Navigation("Conta");
                 });
 
             modelBuilder.Entity("FiapTechChallenge.API.Entity.Investimento", b =>
@@ -297,9 +424,27 @@ namespace FiapTechChallenge.API.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("FiapTechChallenge.API.Entity.Usuario", b =>
+                {
+                    b.HasOne("FiapTechChallenge.API.Entity.Conta", "Conta")
+                        .WithOne("Usuario")
+                        .HasForeignKey("FiapTechChallenge.API.Entity.Usuario", "ContaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Conta");
+                });
+
             modelBuilder.Entity("FiapTechChallenge.API.Entity.ClasseInvestimento", b =>
                 {
                     b.Navigation("Investimentos");
+                });
+
+            modelBuilder.Entity("FiapTechChallenge.API.Entity.Conta", b =>
+                {
+                    b.Navigation("DadosBancarios");
+
+                    b.Navigation("Usuario");
                 });
 #pragma warning restore 612, 618
         }

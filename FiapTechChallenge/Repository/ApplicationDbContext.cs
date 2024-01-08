@@ -15,6 +15,8 @@ namespace FiapTechChallenge.API.Repository
         public DbSet<ClasseInvestimento> ClasseInvestimento { get; set; }
         public DbSet<Investimento> Investimento { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<DadosBancario> DadosBancario { get; set; }
+        public DbSet<Conta> Conta { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -85,8 +87,28 @@ namespace FiapTechChallenge.API.Repository
                 new Investimento { Id = 18, Descricao = "Operações com moedas estrangeiras", IdClasseInvestimento = 7 }
             );
 
+            modelBuilder.Entity<Conta>().HasData(
+                              new Conta {
+                                  Id = 1,
+                                  NumeroConta = 1111,
+                                  CPF = "11111111111",
+                                  Nome = "Admin",
+                                  Email = "admin@admin.com",
+                                  NomeMae = "Maria",
+                                  NomePai = "José",
+                                  Renda = 0,
+                                  CEP = "1200000",
+                                  Logradouro = "Rua Sem Nome",
+                                  Numero = 1,
+                                  Complemento = "Casa",
+                                  Bairro = "Centro",
+                                  Cidade = "São Paulo",
+                                  Estado = "SP",
+                                  Ativo = true
+                              });
+
             modelBuilder.Entity<Usuario>().HasData(
-                               new Usuario { Id = 1, Nome = "admin", Email = "admin@admin.com", Login = "admin", Senha = "admin@123" });
+                               new Usuario { Id = 1, ContaId = 1, Nome = "admin", Email = "admin@admin.com", Login = "admin", Senha = "admin@123" });
         }
     }
 }

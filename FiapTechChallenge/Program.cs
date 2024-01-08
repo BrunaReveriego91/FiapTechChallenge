@@ -1,22 +1,28 @@
 using FiapTechChallenge.API.Core;
 using FiapTechChallenge.API.Core.Entity;
 using FiapTechChallenge.API.Core.Interfaces;
+using FiapTechChallenge.API.Entity;
+using FiapTechChallenge.API.Entity.Validators;
 using FiapTechChallenge.API.Interfaces.Repository;
 using FiapTechChallenge.API.Interfaces.Services;
 using FiapTechChallenge.API.Repository;
 using FiapTechChallenge.API.Services;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x =>
+   x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -58,6 +64,11 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDbContext<ApplicationDbContext>(ServiceLifetime.Scoped);
 builder.Services.AddScoped<IInvestimentoRepository, InvestimentoRepository>();
 builder.Services.AddScoped<IInvestimentosService, InvestimentoService>();
+
+builder.Services.AddScoped<IContaRepository, ContaRepository>();
+builder.Services.AddScoped<IContaService, ContaService>();
+builder.Services.AddScoped<IValidator<Conta>, ContaValidator>();
+
 builder.Services.AddScoped<IAutenticarRepository, AutenticarRepository>();
 builder.Services.AddScoped<IAutenticarService, AutenticarService>();
 builder.Services.AddScoped<IJwtToken, JwtToken>();
