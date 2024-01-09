@@ -8,7 +8,7 @@ using Xunit;
 
 namespace FiapTechChallenge.API.Tests.UnitTests
 {
-    public class UsuarioServiceTests
+    public class AutenticarServiceTests
     {
         Mock<IAutenticarRepository> _autenticarRepository = new Mock<IAutenticarRepository>();
         Mock<IJwtToken> _jwtToken = new Mock<IJwtToken>();
