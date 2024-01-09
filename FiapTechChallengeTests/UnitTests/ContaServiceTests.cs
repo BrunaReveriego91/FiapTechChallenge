@@ -1,10 +1,7 @@
-﻿using FiapTechChallenge.API.DTO;
-using FiapTechChallenge.API.Entity;
+﻿using FiapTechChallenge.API.Entity;
 using FiapTechChallenge.API.Interfaces.Repository;
-using FiapTechChallenge.API.Repository;
 using FiapTechChallenge.API.Services;
 using FiapTechChallenge.API.Tests.UnitTests.Fakes;
-using FiapTechChallenge.API.Tests.UnitTests.Fakes.Requests;
 using FluentValidation;
 using Moq;
 using Xunit;
@@ -38,6 +35,38 @@ namespace FiapTechChallenge.API.Tests.UnitTests
             Assert.IsType<List<Conta>>(response);
         }
 
+        [Fact]
+        public async Task ObterContaPorId_DeveRetornarConta()
+        {
+            //Arrange
+            var servico = CriarServico();
+            var contaFaker = FakeConta.Get();
 
+
+            _contaRepository.Setup(x => x.ObterContaPorId(It.IsAny<int>())).ReturnsAsync(contaFaker);
+            //Act
+            var response = await servico.ObterContaPorId(It.IsAny<int>());
+
+            //Assert
+            Assert.NotNull(response);
+            Assert.IsType<Conta>(response);
+        }
+
+        [Fact]
+        public async Task ObterContaPorId_DeveRetornarNulo()
+        {
+            //Arrange
+            var servico = CriarServico();
+            var contaFaker = FakeConta.Get();
+
+
+            _contaRepository.Setup(x => x.ObterContaPorId(It.Is<int>(id => id != 100))).ReturnsAsync((Conta)null);
+            //Act
+            var response = await servico.ObterContaPorId(100);
+
+            //Assert
+            Assert.Null(response);
+         
+        }
     }
 }
