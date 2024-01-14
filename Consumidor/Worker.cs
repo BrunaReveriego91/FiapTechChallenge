@@ -52,14 +52,13 @@ namespace Consumidor
                     {
                         var body = evetArgs.Body.ToArray();
                         var message = Encoding.UTF8.GetString(body);
-                        var pedido = JsonSerializer.Deserialize<TransacaoStore>(message);
-                        Console.WriteLine($"Quantidade: {pedido.Quantidade}, PrecoCompra: {pedido.PrecoCompra}, TipoTransacao: {pedido.TipoTransacao}, {pedido.Status}");
-                        // var data = _transacaoService.CadastrarTransacao(pedido);
+                        var pedido = JsonSerializer.Deserialize<TransacaoStore>(message);                        
+                        var data = _transacaoService.CadastrarTransacao(pedido);
                     };
 
                     channel.BasicConsume(
                         queue: "fila",
-                        autoAck: false,
+                        autoAck: true,
                         consumer: consumer
                     );
                 }

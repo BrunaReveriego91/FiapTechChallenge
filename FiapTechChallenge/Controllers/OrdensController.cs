@@ -11,12 +11,12 @@ namespace FiapTechChallenge.API.Controllers
     public class OrdensController : ControllerBase
     {
         private readonly IOrdemService _ordemService;
-
-        public OrdensController(IOrdemService ordemService)
+        private readonly ILogger<OrdensController> _logger;
+        public OrdensController(IOrdemService ordemService, ILogger<OrdensController> logger)
         {
             _ordemService = ordemService;
+            _logger = logger;
         }
-
         /// <summary>
         /// Registra uma nova ordem no banco de dados.
         /// </summary>
@@ -33,11 +33,13 @@ namespace FiapTechChallenge.API.Controllers
         {
             try
             {
+                _logger.LogInformation("Cadastro de Ordem sendo executada");
                 _ordemService.CadastrarOrdem(data);
                 return Ok("Ordem cadastrada com sucesso");
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Error: {ex.Message}");
                 Console.WriteLine($"Erro: {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao processar ao cadastrar nova ordem.");
             }
@@ -57,9 +59,10 @@ namespace FiapTechChallenge.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Ordem>))]
         [Produces("application/json")]
         [HttpGet("")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> ListarOrdens()
         {
+            _logger.LogInformation("Listando Ordens");
             return Ok(await _ordemService.ListarOrdens());
         }
     }

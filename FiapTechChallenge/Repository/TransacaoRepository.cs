@@ -28,7 +28,10 @@ namespace FiapTechChallenge.API.Repository
 
         public async Task<List<Transacao>> ListarTransacoes()
         {
-            return await _context.Transacao.ToListAsync();
+            return await _context.Transacao
+               .Include(t => t.Usuario)
+               .Include(t => t.Ordem)
+               .ToListAsync();
         }
     }
 }
