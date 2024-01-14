@@ -18,6 +18,7 @@ namespace FiapTechChallenge.API.Repository
         public DbSet<DadosBancario> DadosBancario { get; set; }
         public DbSet<Conta> Conta { get; set; }
         public DbSet<Ordem> Ordem { get; set; }
+        public DbSet<Transacao> Transacao { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -111,8 +112,9 @@ namespace FiapTechChallenge.API.Repository
                                new Usuario { Id = 1, ContaId = 1, Nome = "admin", Email = "admin@admin.com", Login = "admin", Senha = "admin@123" });
 
             modelBuilder.Entity<Ordem>().HasData(
-                    new Ordem { Id = 1, Quantidade = 99, TipoOrdem = "A Mercado" },
-                    new Ordem { Id = 2, Quantidade = 49, TipoOrdem = "StartStop" }
+                    new Ordem { Id = 1, Nome = "Agilent", Simbolo = "A", TipoOrdem = "NYSE" },
+                    new Ordem { Id = 2, Nome = "International Business Machines Corp", Simbolo = "IBM", TipoOrdem = "NYSE" },
+                    new Ordem { Id = 3, Nome = "iShares iBonds Dec 2024 Term Muni Bond ETF", Simbolo = "IBMM", TipoOrdem = "BATS" }
                 );
         }
     }

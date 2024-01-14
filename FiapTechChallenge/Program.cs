@@ -73,6 +73,8 @@ builder.Services.AddScoped<IAutenticarRepository, AutenticarRepository>();
 builder.Services.AddScoped<IAutenticarService, AutenticarService>();
 builder.Services.AddScoped<IOrdemRepository, OrdemRepository>();
 builder.Services.AddScoped<IOrdemService, OrdemService>();
+builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
+builder.Services.AddScoped<ITransacaoService, TransacaoService>();
 builder.Services.AddScoped<IJwtToken, JwtToken>();
 
 builder.Logging.ClearProviders();

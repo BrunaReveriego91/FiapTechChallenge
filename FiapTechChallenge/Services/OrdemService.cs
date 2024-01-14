@@ -1,4 +1,5 @@
-﻿using FiapTechChallenge.API.Entity;
+﻿using FiapTechChallenge.API.DTO;
+using FiapTechChallenge.API.Entity;
 using FiapTechChallenge.API.Interfaces.Repository;
 using FiapTechChallenge.API.Interfaces.Services;
 
@@ -13,9 +14,9 @@ namespace FiapTechChallenge.API.Services
             _ordemRepository = ordemRepository;
         }
 
-        public Ordem CadastrarOrdem(string tipoOrdem, int quantidade)
+        public Ordem CadastrarOrdem(OrdemStore data)
         {
-            return _ordemRepository.CadastrarOrdem(tipoOrdem, quantidade);            
+            return _ordemRepository.CadastrarOrdem(data);            
         }
 
         public async Task<List<Ordem>> ListarOrdens()

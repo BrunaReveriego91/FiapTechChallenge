@@ -11,8 +11,9 @@ namespace FiapTechChallenge.API.Configurations
             builder.ToTable("Ordem");
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Id).HasColumnType("INT").UseIdentityColumn();
-            builder.Property(p => p.TipoOrdem).HasColumnType("VARCHAR(100)");
-            builder.Property(p => p.Quantidade).HasColumnType("INTEGER");
+            builder.Property(p => p.Simbolo).HasColumnType("VARCHAR(10)");
+            builder.Property(p => p.Nome).HasColumnType("VARCHAR(255)");
+            builder.Property(p => p.TipoOrdem).HasColumnType("VARCHAR(255)");
         }
     }
 }

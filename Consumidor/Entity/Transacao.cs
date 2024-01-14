@@ -1,7 +1,7 @@
 ﻿
-using FiapTechChallenge.API.Enums;
+using FiapTechChallenge.Consumidor.Enums;
 
-namespace FiapTechChallenge.API.Entity
+namespace FiapTechChallenge.Consumidor.Entity
 {
     public class Transacao : Entidade
     {
@@ -15,8 +15,6 @@ namespace FiapTechChallenge.API.Entity
         public TipoTransacao TipoTransacao { get; set; }
         public Status Status { get; set; }
         public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
         public int OrdemId { get; set; }
-        public Ordem Ordem { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using FiapTechChallenge.API.Entity;
+﻿using FiapTechChallenge.API.DTO;
+using FiapTechChallenge.API.Entity;
 using FiapTechChallenge.API.Interfaces.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,9 +10,14 @@ namespace FiapTechChallenge.API.Repository
         public OrdemRepository(ApplicationDbContext context) : base(context)
         {
         }
-        public Ordem CadastrarOrdem(string tipoOrdem, int quantidade)
+        public Ordem CadastrarOrdem(OrdemStore data)
         {
-            Ordem ordemCadastrada = new Ordem { Quantidade = quantidade, TipoOrdem = tipoOrdem };
+            Ordem ordemCadastrada = new Ordem { 
+                Nome = data.Nome,
+                Simbolo = data.Simbolo,
+                TipoOrdem = data.TipoOrdem
+            };
+
             _context.Ordem.Add(ordemCadastrada);
             _context.SaveChanges();
             return ordemCadastrada;
