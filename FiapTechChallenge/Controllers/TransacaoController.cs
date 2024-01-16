@@ -2,11 +2,9 @@
 using FiapTechChallenge.API.Entity;
 using FiapTechChallenge.API.Enums;
 using FiapTechChallenge.API.Interfaces.Services;
-using FiapTechChallenge.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RabbitMQ.Client;
-using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 
@@ -113,7 +111,7 @@ namespace FiapTechChallenge.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<Transacao>))]
         [Produces("application/json")]
         [HttpGet("")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> ListarTransacoes()
         {
             _logger.LogInformation("Trazendo todas as transações");
