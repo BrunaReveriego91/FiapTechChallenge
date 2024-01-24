@@ -1,4 +1,5 @@
 using FiapTechChallenge.API;
+using FiapTechChallenge.API.Logging;
 
 public class Program
 {
@@ -16,6 +17,10 @@ public class Program
             .ConfigureLogging((context, builder) =>
             {
                 builder.ClearProviders(); // Limpar os provedores de log padrão
+                builder.AddProvider(new CustomLoggerProvider(new CustomLoggerProviderConfiguration()
+                {
+                    LogLevel = LogLevel.Information
+                }));
             });
 }
 

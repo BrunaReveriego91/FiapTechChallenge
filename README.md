@@ -14,7 +14,7 @@ Projeto de conclusão da Fase 1 da Pós Tech Fiap Curso de Arquitetura de Sistem
 * **Andre Toledo Gama** - [Dev](https://github.com/AndreTGama)
 * **Bruna Reveriego** - [Dev](https://github.com/BrunaReveriego91)
 * **Rodrigo Reis** - [Dev](https://github.com/RodrigoReiis)
-* **Regiane Ruivo** - [Dev]()
+* **Regiane Ruivo** - [Dev](https://github.com/regianeruivo)
 * **Fernando Parissenti** - [Dev](https://github.com/parissenti)
 
 

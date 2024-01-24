@@ -33,13 +33,15 @@ namespace FiapTechChallenge.API.Controllers
         {
             try
             {
-                _logger.LogInformation("Cadastro de Ordem sendo executada");
+                _logger.LogInformation($"Cadastrando Ordem {data.Nome}");
+                //_logger.LogInformation("Cadastro de Ordem sendo executada");
                 _ordemService.CadastrarOrdem(data);
                 return Ok("Ordem cadastrada com sucesso");
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error: {ex.Message}");
+                _logger.LogError(ex, "Error ao Cadastrar ordem");
+                //_logger.LogError($"Error: {ex.Message}");
                 Console.WriteLine($"Erro: {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um erro ao processar ao cadastrar nova ordem.");
             }

@@ -13,10 +13,12 @@ namespace FiapTechChallenge.API.Controllers
     {
 
         private readonly IContaService _contaService;
+        private readonly ILogger<ContaController> _logger;
 
-        public ContaController(IContaService contaService)
+        public ContaController(IContaService contaService, ILogger<ContaController> logger)
         {
             _contaService = contaService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -71,14 +73,17 @@ namespace FiapTechChallenge.API.Controllers
         {
             try
             {
+                _logger.LogInformation($"Adicionando conta {conta.CPF}");
                 return StatusCode(StatusCodes.Status201Created, _contaService.AdicionarConta(conta));
             }
             catch (ValidationException ex)
             {
+                _logger.LogError(ex, "Error ao Adicionar conta");
                 return StatusCode(400, new { error = ex.Message });
             }
             catch
             {
+                _logger.LogCritical("Adicionar conta - Falha interna no servidor");
                 return StatusCode(500, "Falha interna no servidor");
             }
         }
@@ -95,14 +100,17 @@ namespace FiapTechChallenge.API.Controllers
         {
             try
             {
+                _logger.LogInformation($"Atualizando conta {conta.CPF}");
                 return Ok(_contaService.AtualizarConta(conta));
             }
             catch (ValidationException ex)
             {
+                _logger.LogError(ex, "Error ao Atualizar conta");
                 return StatusCode(400, ex.Message);
             }
             catch
             {
+                _logger.LogCritical("Atualizar conta - Falha interna no servidor");
                 return StatusCode(500, "Falha interna no servidor");
             }
         }
@@ -120,14 +128,17 @@ namespace FiapTechChallenge.API.Controllers
         {
             try
             {
+                _logger.LogInformation($"Atualizando conta {id}");
                 return Ok(_contaService.RemoverConta(id));
             }
             catch (ValidationException ex)
             {
+                _logger.LogError(ex, "Error ao Remover conta");
                 return StatusCode(400, ex.Message);
             }
             catch
             {
+                _logger.LogCritical("Remover conta - Falha interna no servidor");
                 return StatusCode(500, "Falha interna no servidor");
             }
             
