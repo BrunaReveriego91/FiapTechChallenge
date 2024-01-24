@@ -88,7 +88,7 @@ namespace FiapTechChallenge.API
             services.AddScoped<IOrdemService, OrdemService>();
             services.AddScoped<ITransacaoRepository, TransacaoRepository>();
             services.AddScoped<ITransacaoService, TransacaoService>();
-            services.AddScoped<IJwtToken, JwtToken>();
+            services.AddScoped<IJwtToken, JwtToken>();            
 
 
             var configuration = new ConfigurationBuilder()
@@ -136,6 +136,7 @@ namespace FiapTechChallenge.API
 
             app.UseAuthentication();
             app.UseAuthorization();
+            
 
             app.UseEndpoints(endpoints =>
             {
