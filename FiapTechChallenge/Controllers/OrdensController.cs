@@ -18,7 +18,7 @@ namespace FiapTechChallenge.API.Controllers
             _logger = logger;
         }
         /// <summary>
-        /// Registra uma nova ordem no banco de dados.
+        /// Registra uma nova ordem no banco de dados.  
         /// </summary>
         /// <param name="data">Objeto contendo os dados da ordem a ser cadastrada. São eles: Simbolo, Nome, TipoOrdem todos do tipo string </param>
         /// <returns>

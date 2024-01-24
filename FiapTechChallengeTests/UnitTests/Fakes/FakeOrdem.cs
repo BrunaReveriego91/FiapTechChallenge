@@ -1,7 +1,7 @@
 ﻿using Bogus;
 using FiapTechChallenge.API.Entity;
 
-namespace FiapTechChallenge.API.Tests.UnitTests
+namespace FiapTechChallenge.API.Tests.UnitTests.Fakes
 {
     public class FakeOrdem
     {
@@ -16,7 +16,7 @@ namespace FiapTechChallenge.API.Tests.UnitTests
                 .RuleFor(c => c.Simbolo, f => f.Random.Word())
                 .RuleFor(c => c.Nome, f => f.Random.Word())
                 .RuleFor(c => c.TipoOrdem, f => f.Random.Word());
-     
+
 
             var ordem = ordemFaker.Generate(qtdeRegistros);
             return ordem;

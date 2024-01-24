@@ -1,8 +1,11 @@
-﻿using FiapTechChallenge.API.Entity;
+﻿using FiapTechChallenge.API.DTO;
+using FiapTechChallenge.API.Entity;
 using FiapTechChallenge.API.Interfaces.Repository;
 using FiapTechChallenge.API.Services;
 using FiapTechChallenge.API.Tests.UnitTests.Fakes;
+using FiapTechChallenge.API.Tests.UnitTests.Fakes.Requests;
 using FluentValidation;
+using FluentValidation.Results;
 using Moq;
 using Xunit;
 
@@ -66,7 +69,132 @@ namespace FiapTechChallenge.API.Tests.UnitTests
 
             //Assert
             Assert.Null(response);
-         
+
         }
+
+        [Fact]
+        public async Task AdicionarConta_DeveRetornarSucesso_DeveRetornarConta()
+        {
+
+            //Arrange
+            var servico = CriarServico();
+
+            var contaFakerRequest = FakeContaRequest.Get();
+
+            var listaDadosBancarios = new List<DadosBancario>();
+
+            foreach (var item in contaFakerRequest.DadosBancarios)
+            {
+                listaDadosBancarios.Add(new DadosBancario
+                {
+                    CodigoBanco = item.CodigoBanco,
+                    Agencia = item.Agencia,
+                    NumeroConta = item.NumeroConta,
+                });
+            };
+
+            var contaFake = new Conta()
+            {
+                Usuario = new Usuario()
+                {
+                    Nome = contaFakerRequest.Nome,
+                    Email = contaFakerRequest.Email,
+                    Login = contaFakerRequest.NumeroConta.ToString(),
+                    Senha = contaFakerRequest.Senha
+                },
+
+                NumeroConta = contaFakerRequest.NumeroConta,
+                CPF = contaFakerRequest.CPF,
+                Nome = contaFakerRequest.Nome,
+                Email = contaFakerRequest.Email,
+                NomeMae = contaFakerRequest.NomeMae,
+                NomePai = contaFakerRequest.NomePai,
+                Renda = contaFakerRequest.Renda,
+                CEP = contaFakerRequest.CEP,
+                Logradouro = contaFakerRequest.Logradouro,
+                Numero = contaFakerRequest.Numero,
+                Complemento = contaFakerRequest.Complemento,
+                Bairro = contaFakerRequest.Bairro,
+                Cidade = contaFakerRequest.Cidade,
+                Estado = contaFakerRequest.Estado,
+                DadosBancarios = listaDadosBancarios
+
+            };
+
+
+            _validator.Setup(x => x.Validate(It.IsAny<Conta>())).Returns(new ValidationResult());
+            _contaRepository.Setup(x => x.AdicionarConta(It.IsAny<Conta>())).Returns(contaFake);
+
+            //Act
+            var response = servico.AdicionarConta(contaFakerRequest);
+
+            //Assert
+            Assert.NotNull(response);
+
+        }
+
+        [Fact]
+        public async Task AdicionarConta_DeveRetornarFalha_DeveRetornarValidationException()
+        {
+
+            //Arrange
+            var servico = CriarServico();
+
+            var contaFakerRequest = FakeContaRequest.Get();
+
+            var listaDadosBancarios = new List<DadosBancario>();
+
+            foreach (var item in contaFakerRequest.DadosBancarios)
+            {
+                listaDadosBancarios.Add(new DadosBancario
+                {
+                    CodigoBanco = item.CodigoBanco,
+                    Agencia = item.Agencia,
+                    NumeroConta = item.NumeroConta,
+                });
+            };
+
+            var contaFake = new Conta()
+            {
+                Usuario = new Usuario()
+                {
+                    Nome = contaFakerRequest.Nome,
+                    Email = contaFakerRequest.Email,
+                    Login = contaFakerRequest.NumeroConta.ToString(),
+                    Senha = contaFakerRequest.Senha
+                },
+
+                NumeroConta = contaFakerRequest.NumeroConta,
+                CPF = contaFakerRequest.CPF,
+                Nome = contaFakerRequest.Nome,
+                Email = contaFakerRequest.Email,
+                NomeMae = contaFakerRequest.NomeMae,
+                NomePai = contaFakerRequest.NomePai,
+                Renda = contaFakerRequest.Renda,
+                CEP = contaFakerRequest.CEP,
+                Logradouro = contaFakerRequest.Logradouro,
+                Numero = contaFakerRequest.Numero,
+                Complemento = contaFakerRequest.Complemento,
+                Bairro = contaFakerRequest.Bairro,
+                Cidade = contaFakerRequest.Cidade,
+                Estado = contaFakerRequest.Estado,
+                DadosBancarios = listaDadosBancarios
+
+            };
+
+
+            _validator.Setup(x => x.Validate(It.IsAny<Conta>())).Returns(new ValidationResult() { Errors = new List<ValidationFailure>() { new ValidationFailure("PropertyName", "Mensagem de erro") } });
+            _contaRepository.Setup(x => x.AdicionarConta(It.IsAny<Conta>())).Returns(contaFake);
+
+            //Act
+            var serviceException = Assert.Throws<ValidationException>(() => servico.AdicionarConta(contaFakerRequest));
+
+
+            //Assert
+            Assert.NotNull(serviceException);
+
+        }
+
+
     }
 }

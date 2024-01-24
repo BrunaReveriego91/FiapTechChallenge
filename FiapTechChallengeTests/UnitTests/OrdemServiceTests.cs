@@ -1,5 +1,6 @@
 ﻿using FiapTechChallenge.API.Interfaces.Repository;
 using FiapTechChallenge.API.Services;
+using FiapTechChallenge.API.Tests.UnitTests.Fakes;
 using FiapTechChallenge.API.Tests.UnitTests.Fakes.Requests;
 using Moq;
 using Xunit;
@@ -51,4 +52,4 @@ namespace FiapTechChallenge.API.Tests.UnitTests
             Assert.NotNull(response);
         }
     }
-}
+}           
