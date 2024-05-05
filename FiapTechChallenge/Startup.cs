@@ -15,6 +15,7 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using RabbitMQ.Client;
 
 namespace FiapTechChallenge.API
 {
@@ -88,6 +89,11 @@ namespace FiapTechChallenge.API
             services.AddScoped<IOrdemService, OrdemService>();
             services.AddScoped<ITransacaoRepository, TransacaoRepository>();
             services.AddScoped<ITransacaoService, TransacaoService>();
+            services.AddSingleton<IConnection>(sp =>
+            {
+                var factory = new ConnectionFactory() { HostName = "localhost", UserName = "guest", Password = "guest" };
+                return factory.CreateConnection();
+            });
             services.AddScoped<IJwtToken, JwtToken>();            
 
 

@@ -1,8 +1,13 @@
 ﻿using FiapTechChallenge.API.DTO;
 using FiapTechChallenge.API.Entity;
+using FiapTechChallenge.API.Interfaces.RabbitMQ;
 using FiapTechChallenge.API.Interfaces.Services;
+using FiapTechChallenge.API.Services.RabbitMQ;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RabbitMQ.Client;
+using System.Text;
+using System.Text.Json;
 
 namespace FiapTechChallenge.API.Controllers
 {
@@ -12,6 +17,7 @@ namespace FiapTechChallenge.API.Controllers
     {
         private readonly IOrdemService _ordemService;
         private readonly ILogger<OrdensController> _logger;
+        private readonly IOrdensRabbitMQ _ordensRabbitMQ;
         public OrdensController(IOrdemService ordemService, ILogger<OrdensController> logger)
         {
             _ordemService = ordemService;
@@ -34,8 +40,7 @@ namespace FiapTechChallenge.API.Controllers
             try
             {
                 _logger.LogInformation($"Cadastrando Ordem {data.Nome}");
-                //_logger.LogInformation("Cadastro de Ordem sendo executada");
-                _ordemService.CadastrarOrdem(data);
+                _ordensRabbitMQ.cadastrarOrdem(data);                
                 return Ok("Ordem cadastrada com sucesso");
             }
             catch (Exception ex)
